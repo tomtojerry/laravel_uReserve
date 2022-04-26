@@ -8,7 +8,7 @@
 		<div class="py-12">
 				<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 						<div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
-								<div class="mx-auto py-4 max-w-2xl">
+								<div class="mx-auto max-w-2xl py-4">
 										<x-jet-validation-errors class="mb-4" />
 
 										@if (session('status'))
@@ -20,47 +20,49 @@
 										<form method="GET" action="{{ route('events.edit', ['event' => $event->id]) }}">
 												<div>
 														<x-jet-label for="event_name" value="イベント名" />
-                            {{ $event->name }}
+														{{ $event->name }}
 												</div>
 
 												<div class="mt-4">
 														<x-jet-label for="information" value="イベント詳細" />
-                            {!! nl2br(e($event->information)) !!}
+														{!! nl2br(e($event->information)) !!}
 												</div>
 
 												<div class="justify-between md:flex">
 														<div class="mt-4">
 																<x-jet-label for="event_date" value="イベント日付" />
-                                {{ $event->eventDate }}
+																{{ $event->eventDate }}
 														</div>
 
 														<div class="mt-4">
 																<x-jet-label for="start_time" value="開始時間" />
-                                {{ $event->startTime }}
+																{{ $event->startTime }}
 														</div>
 
 														<div class="mt-4">
 																<x-jet-label for="end_time" value="終了時間" />
-                                {{ $event->endTime }}
+																{{ $event->endTime }}
 														</div>
 												</div>
 
-                        <div class="md:flex justify-between items-end">
-                          <div class="mt-4">
+												<div class="items-end justify-between md:flex">
+														<div class="mt-4">
 																<x-jet-label for="max_people" value="定員数" />
-                                {{ $event->max_people }}
+																{{ $event->max_people }}
 														</div>
-                            <div class="flex space-x-4 justify-around">
-                              @if ($event->is_visible)
-                                表示中
-                              @else
-                                非表示
-                              @endif
-                            </div>
-														<x-jet-button class="ml-4">
-																編集する
-														</x-jet-button>
-                        </div>
+														<div class="flex justify-around space-x-4">
+																@if ($event->is_visible)
+																		表示中
+																@else
+																		非表示
+																@endif
+														</div>
+														@if ($event->eventDate >= \Carbon\Carbon::today()->format('Y年m月d日'))
+																<x-jet-button class="ml-4">
+																		編集する
+																</x-jet-button>
+														@endif
+												</div>
 
 										</form>
 								</div>
