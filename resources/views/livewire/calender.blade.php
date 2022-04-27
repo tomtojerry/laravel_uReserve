@@ -5,7 +5,7 @@
 		<input id="calender" class="mx-auto mt-1 mb-2 block" type="text" name="calender" value="{{ $currentDate }}"
 				wire:change="getDate($event.target.value)" />
 
-		<div class="mx-auto flex border border-green-400">
+		<div class="mx-auto flex">
 				<x-calender-time />
 				@for ($i = 0; $i < 7; $i++)
 						<div class="w-32">
