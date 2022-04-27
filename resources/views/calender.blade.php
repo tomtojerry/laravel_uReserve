@@ -6,7 +6,7 @@
 		</x-slot>
 
 		<div class="py-4">
-				<div class="event-calender mx-auto border border-red-400 sm:px-6 lg:px-8">
+				<div class="event-calender mx-auto sm:px-6 lg:px-8">
 						<div class="overflow-hidden bg-white shadow-xl sm:rounded-lg">
 								@livewire('calender')
 						</div>
