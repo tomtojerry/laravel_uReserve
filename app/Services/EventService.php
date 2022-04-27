@@ -5,8 +5,10 @@ namespace App\Services;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class EventService {
-  public static function checkEventDuplication($eventDate, $startTime, $endTime) {
+class EventService
+{
+  public static function checkEventDuplication($eventDate, $startTime, $endTime)
+  {
 
     return DB::table('events')
       ->whereDate('start_date', $eventDate)
@@ -15,7 +17,8 @@ class EventService {
       ->exists();
   }
 
-  public static function countEventDuplication($eventDate, $startTime, $endTime) {
+  public static function countEventDuplication($eventDate, $startTime, $endTime)
+  {
 
     return DB::table('events')
       ->whereDate('start_date', $eventDate)
@@ -24,12 +27,33 @@ class EventService {
       ->count();
   }
 
-  public static function joinDateAndTime($date, $time) {
+  public static function joinDateAndTime($date, $time)
+  {
     $join = $date . " " . $time;
 
     return Carbon::createFromFormat(
       'Y-m-d H:i',
       $join
     );
+  }
+
+  public static function getWeekEvents($startDate, $endDate)
+  {
+    $reservedPeople = DB::table('reservations')
+      ->select('event_id', DB::raw('sum(number_of_people) as number_of_people'))
+      ->whereNull('canceled_date')
+      ->groupBy('event_id');
+
+    return DB::table('events')
+      ->leftJoinSub(
+        $reservedPeople,
+        'reservedPeople',
+        function ($join) {
+          $join->on('events.id', '=', 'reservedPeople.event_id');
+        }
+      )
+      ->whereBetween('start_date', [$startDate, $endDate])
+      ->orderBy('start_date', 'desc')
+      ->get();
   }
 }
